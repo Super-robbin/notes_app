@@ -3,7 +3,7 @@ class NotesModel {
     this.notes = [];
   }
   addNote(note) {
-
+    this.notes.push(note)
   }
 
   getNotes() {
