@@ -12,5 +12,12 @@ describe("A note class to add and see notes", () => {
     model.addNote('Make dinner')
     expect(model.getNotes()).toEqual(['Set the alarm', 'Make dinner']);
   });
-  
+
+  it("Reset the list and return []", () => {
+    const model = new NotesModel();
+    model.addNote('Set the alarm')
+    model.addNote('Make dinner')
+    model.reset()
+    expect(model.getNotes()).toEqual([]);
+  });
 });
