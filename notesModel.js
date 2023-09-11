@@ -3,15 +3,15 @@ class NotesModel {
     this.notes = [];
   }
   addNote(note) {
-    this.notes.push(note)
+    this.notes.push(note);
   }
 
   getNotes() {
-    return this.notes
+    return this.notes;
   }
 
   reset() {
-    this.notes = []
+    this.notes = [];
   }
 }
 
