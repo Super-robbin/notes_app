@@ -1,6 +1,7 @@
 class NotesView {
-  constructor(model) {
+  constructor(model, client) {
     this.model = model;
+    this.client = client;
     this.mainContainerEl = document.querySelector("#main-container");
     this.buttonEl = document.querySelector("#add-note-button");
 
@@ -30,8 +31,15 @@ class NotesView {
     // document.querySelector('#message-input').value = '';
     // to show just the message below the input box, instead of both
     // inside and below
-    });
-  }}
+    })};
+
+    displayNotesFromApi() {
+        this.client.loadData((data) => {
+        this.model.setNotes(data);
+        this.displayNotes()
+      })
+    }
+  }
 
 
 module.exports = NotesView;
