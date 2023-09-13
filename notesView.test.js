@@ -37,7 +37,7 @@ describe("A test for my web page", () => {
     const notesView = new NotesView(model);
     const buttonEl = document.querySelector("#add-note-button");
     const inputEl = document.querySelector("#message-input");
-    inputEl.input = "Watch a nice movie";
+    inputEl.value = "Watch a nice movie";
     buttonEl.click();
     expect(document.querySelector(".note")).not.toBeNull();
     expect(document.querySelector(".note").textContent).toBe('Watch a nice movie'); 
