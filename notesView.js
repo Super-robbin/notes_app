@@ -4,13 +4,16 @@ class NotesView {
     this.client = client;
     this.mainContainerEl = document.querySelector("#main-container");
     this.buttonEl = document.querySelector("#add-note-button");
+    this.inputEl = document.querySelector("#message-input");
 
     this.buttonEl.addEventListener("click", () => {
-      const inputEl = document.querySelector("#message-input");
-      this.client.createNote(inputEl.value); // first create the note
-      this.model.addNote(inputEl.value); // then add the note
-      this.displayNotes();
-      inputEl.value = "";
+      this.client.createNote((this.inputEl.value), () => { // first create the note
+        this.model.addNote(this.inputEl.value); // then add the note
+        this.displayNotes();
+        this.inputEl.value = "";
+      }, (error) => {
+          this.displayError(error)
+      });
     });
   }
 
@@ -39,7 +42,16 @@ class NotesView {
     this.client.loadData((data) => {
       this.model.setNotes(data);
       this.displayNotes();
+    }, (error) => {
+      this.displayError(error)
     });
+  }
+
+  displayError(error) {
+    const errorEl = document.createElement('div');
+    errorEl.textContent = error.message;
+    errorEl.className = "error";
+    this.mainContainerEl.append(errorEl)
   }
 }
 

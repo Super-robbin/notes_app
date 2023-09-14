@@ -32,12 +32,14 @@
   var require_notesClient = __commonJS({
     "notesClient.js"(exports, module) {
       var NotesClient2 = class {
-        loadData(callback) {
+        loadData(resolved, rejected) {
           return fetch("http://localhost:3000/notes").then((response) => response.json()).then((data) => {
-            callback(data);
+            resolved(data);
+          }).catch((error) => {
+            rejected(error);
           });
         }
-        createNote(data) {
+        createNote(data, callback, errorCallback) {
           return fetch("http://localhost:3000/notes", {
             method: "POST",
             headers: {
@@ -47,6 +49,10 @@
               // specify content: data
               content: data
             })
+          }).then((response) => response.json()).then((data2) => {
+            callback(data2);
+          }).catch((error) => {
+            errorCallback(error);
           });
         }
       };
@@ -63,12 +69,15 @@
           this.client = client2;
           this.mainContainerEl = document.querySelector("#main-container");
           this.buttonEl = document.querySelector("#add-note-button");
+          this.inputEl = document.querySelector("#message-input");
           this.buttonEl.addEventListener("click", () => {
-            const inputEl = document.querySelector("#message-input");
-            this.client.createNote(inputEl.value);
-            this.model.addNote(inputEl.value);
-            this.displayNotes();
-            inputEl.value = "";
+            this.client.createNote(this.inputEl.value, () => {
+              this.model.addNote(this.inputEl.value);
+              this.displayNotes();
+              this.inputEl.value = "";
+            }, (error) => {
+              this.displayError(error);
+            });
           });
         }
         displayNotes() {
@@ -87,7 +96,15 @@
           this.client.loadData((data) => {
             this.model.setNotes(data);
             this.displayNotes();
+          }, (error) => {
+            this.displayError(error);
           });
+        }
+        displayError(error) {
+          const errorEl = document.createElement("div");
+          errorEl.textContent = error.message;
+          errorEl.className = "error";
+          this.mainContainerEl.append(errorEl);
         }
       };
       module.exports = NotesView2;

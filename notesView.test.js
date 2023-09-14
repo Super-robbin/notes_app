@@ -5,7 +5,7 @@
 const fs = require("fs");
 const NotesView = require("./notesView");
 const NotesModel = require("./notesModel");
-const NotesClient = require('./notesClient')
+const NotesClient = require("./notesClient");
 
 describe("A test for my web page", () => {
   // We can use the beforeEach() hook
@@ -43,6 +43,8 @@ describe("A test for my web page", () => {
     inputEl.value = "Watch a nice movie";
     buttonEl.click();
     expect(document.querySelector(".note")).not.toBeNull();
-    expect(document.querySelector(".note").textContent).toBe('Watch a nice movie'); 
+    expect(document.querySelector(".note").textContent).toBe(
+      "Watch a nice movie"
+    );
   });
 });
