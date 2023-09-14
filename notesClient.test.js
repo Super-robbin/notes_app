@@ -20,4 +20,14 @@ describe('NotesClient class', () => {
             expect(returnedDataFromApi).toEqual(['This is a note']);
             done();
     })
+
+    // it('calls fetch and create notes', (done) => {
+    //     const client = new NotesClient();
+    //     fetch.mockResponseOnce(JSON.stringify(
+    //         ['This is a note']
+    //     ))
+        
+    // })
+
+
 })})

@@ -37,6 +37,18 @@
             callback(data);
           });
         }
+        createNote(data) {
+          return fetch("http://localhost:3000/notes", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              // specify content: data
+              content: data
+            })
+          });
+        }
       };
       module.exports = NotesClient2;
     }
@@ -53,6 +65,7 @@
           this.buttonEl = document.querySelector("#add-note-button");
           this.buttonEl.addEventListener("click", () => {
             const inputEl = document.querySelector("#message-input");
+            this.client.createNote(inputEl.value);
             this.model.addNote(inputEl.value);
             this.displayNotes();
             inputEl.value = "";

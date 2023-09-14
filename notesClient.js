@@ -11,6 +11,18 @@ class NotesClient {
         // 3 - We take the JSON and turn it into an object or array.
       });
   }
+  createNote(data){
+    return fetch('http://localhost:3000/notes', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ // specify content: data
+          content: data
+        })
+    })
+    
+}
 }
 
 module.exports = NotesClient;

@@ -5,6 +5,7 @@
 const fs = require("fs");
 const NotesView = require("./notesView");
 const NotesModel = require("./notesModel");
+const NotesClient = require('./notesClient')
 
 describe("A test for my web page", () => {
   // We can use the beforeEach() hook
@@ -16,9 +17,10 @@ describe("A test for my web page", () => {
   it("displays two notes", () => {
     // 1. Arrange - instantiate our View class
     const model = new NotesModel();
+    const client = new NotesClient();
     model.addNote("Make dinner");
     model.addNote("Watch Apple event");
-    const notesView = new NotesView(model);
+    const notesView = new NotesView(model, client);
 
     // 2. Act - call any method that modifies the page
     // this method `displayTitle` would dynamically
@@ -34,7 +36,8 @@ describe("A test for my web page", () => {
 
   it("adds a new note", () => {
     const model = new NotesModel();
-    const notesView = new NotesView(model);
+    const client = new NotesClient();
+    const notesView = new NotesView(model, client);
     const buttonEl = document.querySelector("#add-note-button");
     const inputEl = document.querySelector("#message-input");
     inputEl.value = "Watch a nice movie";
