@@ -32,15 +32,18 @@
   var require_notesClient = __commonJS({
     "notesClient.js"(exports, module) {
       var NotesClient2 = class {
+        constructor() {
+          this.url = "http://localhost:3000";
+        }
         loadData(resolved, rejected) {
-          return fetch("http://localhost:3000/notes").then((response) => response.json()).then((data) => {
+          return fetch(`${this.url}/notes`).then((response) => response.json()).then((data) => {
             resolved(data);
           }).catch((error) => {
             rejected(error);
           });
         }
         createNote(data, callback, errorCallback) {
-          return fetch("http://localhost:3000/notes", {
+          return fetch(`${this.url}/notes`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
@@ -51,6 +54,15 @@
             })
           }).then((response) => response.json()).then((data2) => {
             callback(data2);
+          }).catch((error) => {
+            errorCallback(error);
+          });
+        }
+        resetNotes(callback, errorCallback) {
+          return fetch(`${this.url}/notes`, {
+            method: "DELETE"
+          }).then((response) => response.json()).then((data) => {
+            callback(data);
           }).catch((error) => {
             errorCallback(error);
           });
@@ -68,16 +80,34 @@
           this.model = model2;
           this.client = client2;
           this.mainContainerEl = document.querySelector("#main-container");
-          this.buttonEl = document.querySelector("#add-note-button");
+          this.addButtonEl = document.querySelector("#add-note-button");
+          this.resetButtonEl = document.querySelector("#reset-notes-button");
           this.inputEl = document.querySelector("#message-input");
-          this.buttonEl.addEventListener("click", () => {
-            this.client.createNote(this.inputEl.value, () => {
-              this.model.addNote(this.inputEl.value);
-              this.displayNotes();
-              this.inputEl.value = "";
-            }, (error) => {
-              this.displayError(error);
-            });
+          this.addButtonEl.addEventListener("click", () => {
+            this.client.createNote(
+              // first create the note
+              this.inputEl.value,
+              () => {
+                this.model.addNote(this.inputEl.value);
+                this.displayNotes();
+                this.inputEl.value = "";
+              },
+              (error) => {
+                this.displayError(error);
+              }
+            );
+          });
+          this.resetButtonEl.addEventListener("click", () => {
+            this.client.resetNotes(
+              () => {
+                document.querySelectorAll(".note").forEach((element) => {
+                  element.remove();
+                });
+              },
+              (error) => {
+                this.displayError(error);
+              }
+            );
           });
         }
         displayNotes() {
@@ -93,12 +123,15 @@
           });
         }
         displayNotesFromApi() {
-          this.client.loadData((data) => {
-            this.model.setNotes(data);
-            this.displayNotes();
-          }, (error) => {
-            this.displayError(error);
-          });
+          this.client.loadData(
+            (data) => {
+              this.model.setNotes(data);
+              this.displayNotes();
+            },
+            (error) => {
+              this.displayError(error);
+            }
+          );
         }
         displayError(error) {
           const errorEl = document.createElement("div");

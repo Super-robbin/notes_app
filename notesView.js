@@ -3,17 +3,35 @@ class NotesView {
     this.model = model;
     this.client = client;
     this.mainContainerEl = document.querySelector("#main-container");
-    this.buttonEl = document.querySelector("#add-note-button");
+    this.addButtonEl = document.querySelector("#add-note-button");
+    this.resetButtonEl = document.querySelector("#reset-notes-button");
     this.inputEl = document.querySelector("#message-input");
 
-    this.buttonEl.addEventListener("click", () => {
-      this.client.createNote((this.inputEl.value), () => { // first create the note
-        this.model.addNote(this.inputEl.value); // then add the note
-        this.displayNotes();
-        this.inputEl.value = "";
-      }, (error) => {
-          this.displayError(error)
-      });
+    this.addButtonEl.addEventListener("click", () => {
+      this.client.createNote(
+        // first create the note
+        this.inputEl.value,
+        () => {
+          this.model.addNote(this.inputEl.value); // then add the note
+          this.displayNotes();
+          this.inputEl.value = "";
+        },
+        (error) => {
+          this.displayError(error);
+        }
+      );
+    });
+    this.resetButtonEl.addEventListener("click", () => {
+      this.client.resetNotes(
+        () => {
+          document.querySelectorAll(".note").forEach((element) => {
+            element.remove();
+          });
+        },
+        (error) => {
+          this.displayError(error);
+        }
+      );
     });
   }
 
@@ -39,19 +57,22 @@ class NotesView {
   }
 
   displayNotesFromApi() {
-    this.client.loadData((data) => {
-      this.model.setNotes(data);
-      this.displayNotes();
-    }, (error) => {
-      this.displayError(error)
-    });
+    this.client.loadData(
+      (data) => {
+        this.model.setNotes(data);
+        this.displayNotes();
+      },
+      (error) => {
+        this.displayError(error);
+      }
+    );
   }
 
   displayError(error) {
-    const errorEl = document.createElement('div');
+    const errorEl = document.createElement("div");
     errorEl.textContent = error.message;
     errorEl.className = "error";
-    this.mainContainerEl.append(errorEl)
+    this.mainContainerEl.append(errorEl);
   }
 }
 
