@@ -33,7 +33,7 @@ class NotesClient {
       });
   }
 
-  resetNotes(callback, errorCallback) {
+  reset(callback, errorCallback) {
     return fetch(`${this.url}/notes`, {
       method: 'DELETE',
       })

@@ -58,7 +58,7 @@
             errorCallback(error);
           });
         }
-        resetNotes(callback, errorCallback) {
+        reset(callback, errorCallback) {
           return fetch(`${this.url}/notes`, {
             method: "DELETE"
           }).then((response) => response.json()).then((data) => {
@@ -98,10 +98,11 @@
             );
           });
           this.resetButtonEl.addEventListener("click", () => {
-            this.client.resetNotes(
+            this.client.reset(
               () => {
                 document.querySelectorAll(".note").forEach((element) => {
                   element.remove();
+                  this.model.reset();
                 });
               },
               (error) => {
