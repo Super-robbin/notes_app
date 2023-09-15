@@ -24,10 +24,13 @@ describe('NotesClient class', () => {
     // it('calls fetch and create notes', (done) => {
     //     const client = new NotesClient();
     //     fetch.mockResponseOnce(JSON.stringify(
-    //         ['This is a note']
-    //     ))
-        
+    //         method: "POST",
+    //         headers: {
+    //         "Content-Type": "application/json",
+    //   },
+    //         body: JSON.stringify({
+    //         content: data,
+    //   })
+    //     )) 
     // })
-
-
 })})

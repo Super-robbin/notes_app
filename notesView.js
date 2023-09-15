@@ -3,13 +3,13 @@ class NotesView {
     this.model = model;
     this.client = client;
     this.mainContainerEl = document.querySelector("#main-container");
+    this.notesContainer = document.querySelector("#notes-container")
     this.addButtonEl = document.querySelector("#add-note-button");
     this.resetButtonEl = document.querySelector("#reset-notes-button");
     this.inputEl = document.querySelector("#message-input");
 
     this.addButtonEl.addEventListener("click", () => {
-      this.client.createNote(
-        // first create the note
+      this.client.createNote(// first create the note
         this.inputEl.value,
         () => {
           this.model.addNote(this.inputEl.value); // then add the note
@@ -49,7 +49,7 @@ class NotesView {
       const noteEl = document.createElement("div");
       noteEl.textContent = note;
       noteEl.className = "note";
-      this.mainContainerEl.append(noteEl);
+      this.notesContainer.append(noteEl);
 
       // document.querySelector('#message-input').value = '';
       // to show just the message below the input box, instead of both
